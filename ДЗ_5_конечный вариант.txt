@@ -1,0 +1,115 @@
+1. Создать файл file1 и наполнить его произвольным содержимым. Скопировать его в file2. 
+Создать символическую ссылку file3 на file1. Создать жёсткую ссылку file4 на file1. 
+Посмотреть, какие inode у файлов. Удалить file1. Что стало с остальными созданными файлами? 
+Попробовать вывести их на экран.
+
+
+user@ubuntugb~$ mkdir dz_5
+user@ubuntugb~$ cd dz_5
+user@ubuntugb~/dz_5$ cat > file_1
+i love linux
+user@ubuntugb~/dz_5$
+
+user@ubuntugb~/dz_5$ cp file_1 file_2
+user@ubuntugb~/dz_5$ cat file_2
+i love linux
+user@ubuntugb~/dz_5$
+
+user@ubuntugb~/dz_5$ ln -s file_1 file_3
+user@ubuntugb~/dz_5$
+
+user@ubuntugb~/dz_5$ ln file_1 file_4
+user@ubuntugb~/dz_5$
+
+user@ubuntugb~/dz_5$ ls -li
+total 12
+655723 -rw-rw-r-- 1 user user 0 мая 4 20:30 file
+655718 -rw-rw-r-- 2 user user 7 мая 4 20:38 file_1
+655724 -rw-rw-r-- 1 user user 7 мая 4 20:38 file_2
+655726 lrwxrwxrwx 1 user user 6 мая 4 20:40 file_3 -> file_1
+655718 -rw-rw-r-- 2 user user 7 мая 4 20:38 file_4
+user@ubuntugb~/dz_5$
+
+user@ubuntugb~/dz_5$ rm file_1
+user@ubuntugb~/dz_5$
+
+user@ubuntugb~/dz_5$ ls -li
+total 8
+655723 -rw-rw-r-- 1 user user 0 мая 4 20:30 file
+655724 -rw-rw-r-- 1 user user 7 мая 4 20:38 file_2
+655726 lrwxrwxrwx 1 user user 6 мая 4 20:40 file_3 -> file_1
+655718 -rw-rw-r-- 1 user user 7 мая 4 20:38 file_4
+user@ubuntugb~/dz_5$
+
+file остался без изменений
+file_2 остался без изменений
+file_3 -> file1 остался, но выделен красным
+file_4 изменился номер с 2 на 1 
+
+user@ubuntugb~/dz_5$ cat file_2
+i love linux
+user@ubuntugb~/dz_5$ cat file_3
+cat: file_3: No such file or directory
+user@ubuntugb~/dz_5$ cat file_4
+i love linux
+user@ubuntugb~/dz_5$
+
+
+2. Дать созданным файлам другие, произвольные имена. Создать новую символическую ссылку. 
+Переместить ссылки в другую директорию.
+
+user@ubuntugb~/dz_5$ mv file 1_file
+user@ubuntugb~/dz_5$ mv file_2 2_file
+user@ubuntugb~/dz_5$ mv file_3 3_file
+user@ubuntugb~/dz_5$ mv file_4 4_file
+
+user@ubuntugb~/dz_5$ ln -s 2_file 2_file_2_link
+user@ubuntugb~/dz_5$ ls
+1_file 2_file 2_file_2_link 3_file 4_file
+user@ubuntugb~/dz_5$
+
+user@ubuntugb~/dz_5$ mv 1_file /dir2lesson2/
+user@ubuntugb~/dz_5$ mv 2_file /dir2lesson2/
+
+
+
+3. Создать два произвольных файла. 
+Первому присвоить права на чтение и запись для владельца и группы, только на чтение — для всех. 
+Второму присвоить права на чтение и запись только для владельца. Сделать это в численном и символьном виде.
+
+user@ubuntugb~/dz_5$ echo hi > file_5
+user@ubuntugb~/dz_5$ echo hi_2 > file_6
+user@ubuntugb~/dz_5$ ls -al
+total 24
+-rw-rw-r-- 1 user user 3 мая 4 17:45 file_5
+-rw-rw-r-- 1 user user 5 мая 4 17:45 file_6
+
+
+user@ubuntugb~/dz_5$ chmod 664 file_5
+user@ubuntugb~/dz_5$ chmod ug+rw file_5
+user@ubuntugb~/dz_5$ chmod o+r file_5
+
+user@ubuntugb~/dz_5$ chmod 600 fie_6
+user@ubuntugb~/dz_5$ chmod u+rw file_6
+user@ubuntugb~/dz_5$ chmod go-rwx file_6
+user@ubuntugb~/dz_5$ ls -al
+total 24
+-rw-rw-r-- 1 user user 3 мая 4 17:45 file_5
+-rw------- 1 user user 5 мая 4 17:45 file_6
+user@ubuntugb~/dz_5$
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
